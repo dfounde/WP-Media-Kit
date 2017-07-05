@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WP_Media_Kit
 {
 	private static $instance = null;
+	public static $magazine_cover_options_au;
 
 	public static function get_instance() {
 		if ( null == self::$instance ) {
@@ -51,75 +52,16 @@ class WP_Media_Kit
 	        "Magazine Covers",
 	        "manage_options",
 	        "magazinecovers-options",
-	        array('WMK_Magazine_Covers','init_magazinecovers_page'),
+	        array('WMK_Magazine_Covers','display_magazinecovers_page'),
 	        "dashicons-admin-page", 
 	        23
 	    );
 	}
 
-	public function display_magazinecovers_page() {
-
-	}
-
 	public function admin_init() {
-		$magazine_cover_options_au = array(
-		    array(
-		            'id' => 'magazine_cover_month_1',
-		            'title' => 'January',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_2',
-		            'title' => 'February',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_3',
-		            'title' => 'March',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_4',
-		            'title' => 'April',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_5',
-		            'title' => 'May',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_6',
-		            'title' => 'June',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_7',
-		            'title' => 'July',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_8',
-		            'title' => 'August',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_9',
-		            'title' => 'September',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_10',
-		            'title' => 'October',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_11',
-		            'title' => 'November',
-		        ),
-		    array(
-		            'id' => 'magazine_cover_month_12',
-		            'title' => 'December',
-		        ),
-
-		);
-
-		add_settings_section("magazine_covers_section", "Australian Covers", "display_magazine_covers_header", "magazinecovers-options");
-		foreach ($magazine_cover_options_au as $au_options) {
-            register_setting("magazine_covers_section", $au_options['id']);
-        }
-
         $this->run_plugin();
+        WMK_Magazine_Covers::init_magazinecovers_page();
+
 	}
 
 	public function register_mediakit_post_type() {
@@ -165,177 +107,234 @@ class WP_Media_Kit
 		$prefix = 'wmk_meta_';
 		$mediakit_sections = array(
 			array(
-				'id' => 'ed_letter',
-				'desc' => 'Editor\'s Letter & Big Features','mediakit',
+				'id' => 'globalbrand',
+				'desc' => 'THE GLOBAL BUSINESS BRAND','mediakit',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'cornerstones_mission',
-				'desc' => 'Cornerstones & Mission',
+				'id' => 'ournumbers',
+				'desc' => 'OUR NUMBERS',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'every_issue',
-				'desc' => 'In Every Issue',
+				'id' => 'ouraudience',
+				'desc' => 'OUR AUDIENCE',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'brand_reach',
-				'desc' => 'Brand Reach',
-				'page' => 'mediakit'
-			),
-			array(
-				'id' => 'reader_profile',
-				'desc' => 'Reader Profile',
-				'page' => 'mediakit'
-			),
-			array(
-				'id' => 'executive_awards',
+				'id' => 'executiveawards',
 				'desc' => 'Executive of the Year Awards',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'global_editions',
-				'desc' => 'Global Editions',
+				'id' => 'inspire',
+				'desc' => 'Inspire',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'advertising_opportunities',
-				'desc' => 'Advertising Opportunities & Deadlines',
+				'id' => 'innovate',
+				'desc' => 'Innovate',
 				'page' => 'mediakit'
 			),
 			array(
-				'id' => 'digital_opportunities',
-				'desc' => 'Digital Advertising Opportunities & Deadlines',
+				'id' => 'invest',
+				'desc' => 'Invest',
+				'page' => 'mediakit'
+			),
+			array(
+				'id' => 'indulge',
+				'desc' => 'Indulge',
+				'page' => 'mediakit'
+			),
+			array(
+				'id' => 'editorialcalendar',
+				'desc' => 'Editorial Calendar',
+				'page' => 'mediakit'
+			),
+			array(
+				'id' => 'displayrates',
+				'desc' => 'Display Rates',
+				'page' => 'mediakit'
+			),
+			array(
+				'id' => 'digitalrates',
+				'desc' => 'Digital Rates',
+				'page' => 'mediakit'
+			),
+			array(
+				'id' => 'videointerviews',
+				'desc' => 'Video Interviews',
 				'page' => 'mediakit'
 			),
 		);
         $mediakit_fields = array(
         	array (
-        		'id'    => $prefix.'edletter_enable',
+        		'id'    => $prefix.'globalbrand_enable',
 			    'label' => 'Enabled',
-			    'desc'  => 'Enable Editors Letter Section',
+			    'desc'  => 'Enable Global Brand Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'ed_letter'
+			    'metabox' => 'globalbrand'
 			),
         	array (
-        		'id'    => $prefix.'edletter_main',
-			    'label' => 'Editors Letter Main Content',
-			    'desc'  => 'Editors Letter Main Content',
+        		'id'    => $prefix.'globalbrand_main',
+			    'label' => 'Editors Global Brand Content',
+			    'desc'  => 'Editors Global Brand Content',
 			    'type'  => 'editor',
-			    'metabox' => 'ed_letter'
+			    'metabox' => 'globalbrand'
 			),
 			array (
-				'id'    => $prefix.'cornerstones_enable',
+				'id'    => $prefix.'ournumbers_enable',
 			    'label' => 'Enabled',
-			    'desc'  => 'Enable Cornerstones & Mission Section',
+			    'desc'  => 'Enable Our Numbers Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'cornerstones_mission'
+			    'metabox' => 'ournumbers'
 			),
         	array (
-        		'id'    => $prefix.'cornerstones_main',
-			    'label' => 'Cornerstones & Mission Main Content',
-			    'desc'  => 'Cornerstones & Mission Main Content',
+        		'id'    => $prefix.'ournumbers_main',
+			    'label' => 'Our Numbers Main Content',
+			    'desc'  => 'Our Numbers Main Content',
 			    'type'  => 'editor',
-			    'metabox' => 'cornerstones_mission'
+			    'metabox' => 'ournumbers'
 			),
 			array (
-				'id'    => $prefix.'every_issue_enable',
+				'id'    => $prefix.'ouraudience_enable',
 			    'label' => 'Enabled',
-			    'desc'  => 'Enable Every Issue Section',
+			    'desc'  => 'Enable Our Audience Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'every_issue'
+			    'metabox' => 'ouraudience'
 			),
         	array (
-        		'id'    => $prefix.'every_issue_main',
-			    'label' => 'Every Issue Main Content',
-			    'desc'  => 'Every Issue Main Content',
+        		'id'    => $prefix.'ouraudience_main',
+			    'label' => 'Our Audience Main Content',
+			    'desc'  => 'Our Audience Main Content',
 			    'type'  => 'editor',
-			    'metabox' => 'every_issue'
+			    'metabox' => 'ouraudience'
 			),
 			array (
-				'id'    => $prefix.'brand_reach_enable',
-			    'label' => 'Enabled',
-			    'desc'  => 'Enable Brand Reach Section',
-			    'type'  => 'checkbox',
-			    'metabox' => 'brand_reach'
-			),
-        	array (
-        		'id'    => $prefix.'brand_reach_main',
-			    'label' => 'Cornerstones & Mission Main Content',
-			    'desc'  => 'Cornerstones & Mission Main Content',
-			    'type'  => 'editor',
-			    'metabox' => 'brand_reach'
-			),
-			array (
-				'id'    => $prefix.'reader_profile_enable',
-			    'label' => 'Enabled',
-			    'desc'  => 'Enable Cornerstones & Mission Section',
-			    'type'  => 'checkbox',
-			    'metabox' => 'reader_profile'
-			),
-        	array (
-        		'id'    => $prefix.'reader_profile_main',
-			    'label' => 'Reader Profile Main Content',
-			    'desc'  => 'Reader Profile Main Content',
-			    'type'  => 'editor',
-			    'metabox' => 'reader_profile'
-			),
-				array (
-				'id'    => $prefix.'executive_awards_enable',
+				'id'    => $prefix.'executiveawards_enable',
 			    'label' => 'Enabled',
 			    'desc'  => 'Enable Executive Awards Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'executive_awards'
+			    'metabox' => 'executiveawards'
 			),
-        	array (
-        		'id'    => $prefix.'executive_awards_main',
+			array (
+        		'id'    => $prefix.'executiveawards_main',
 			    'label' => 'Executive Awards Main Content',
 			    'desc'  => 'Executive Awards Main Content',
 			    'type'  => 'editor',
-			    'metabox' => 'executive_awards'
-			),
-				array (
-				'id'    => $prefix.'global_editions_enable',
-			    'label' => 'Enabled',
-			    'desc'  => 'Enable Global Editions Section',
-			    'type'  => 'checkbox',
-			    'metabox' => 'global_editions'
-			),
-        	array (
-        		'id'    => $prefix.'global_editions_main',
-			    'label' => 'Global Editions Main Content',
-			    'desc'  => 'Global Editions Main Content',
-			    'type'  => 'editor',
-			    'metabox' => 'global_editions'
+			    'metabox' => 'executiveawards'
 			),
 			array (
-				'id'    => $prefix.'advertising_opportunities_enable',
+				'id'    => $prefix.'inspire_enable',
 			    'label' => 'Enabled',
-			    'desc'  => 'Enable Advertising Opportunities Section',
+			    'desc'  => 'Enable Inspire Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'advertising_opportunities'
+			    'metabox' => 'inspire'
 			),
         	array (
-        		'id'    => $prefix.'advertising_opportunities_main',
-			    'label' => 'Advertising Opportunities Main Content',
-			    'desc'  => 'Advertising Opportunities Main Content',
+        		'id'    => $prefix.'inspire_main',
+			    'label' => 'Inspire Main Content',
+			    'desc'  => 'Inspire & Mission Main Content',
 			    'type'  => 'editor',
-			    'metabox' => 'advertising_opportunities'
+			    'metabox' => 'inspire'
 			),
 			array (
-				'id'    => $prefix.'digital_opportunities_enable',
+				'id'    => $prefix.'innovate_enable',
 			    'label' => 'Enabled',
-			    'desc'  => 'Enable Digital Advertising Section',
+			    'desc'  => 'Innovate Section',
 			    'type'  => 'checkbox',
-			    'metabox' => 'digital_opportunities'
+			    'metabox' => 'innovate'
 			),
         	array (
-        		'id'    => $prefix.'digital_opportunities_main',
-			    'label' => 'Digital Advertising Main Content',
-			    'desc'  => 'Digital Advertising Main Content',
+        		'id'    => $prefix.'innovate_main',
+			    'label' => 'Innovate Main Content',
+			    'desc'  => 'Innovate Main Content',
 			    'type'  => 'editor',
-			    'metabox' => 'digital_opportunities'
+			    'metabox' => 'innovate'
+			),
+			array (
+				'id'    => $prefix.'invest_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Invest Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'invest'
+			),
+        	array (
+        		'id'    => $prefix.'invest_main',
+			    'label' => 'Invest Main Content',
+			    'desc'  => 'Invest Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'invest'
+			),
+			array (
+				'id'    => $prefix.'indulge_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Indulge Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'indulge'
+			),
+        	array (
+        		'id'    => $prefix.'indulge_main',
+			    'label' => 'Indulge Main Content',
+			    'desc'  => 'Indulge Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'indulge'
+			),
+			array (
+				'id'    => $prefix.'editorialcalendar_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Editorial Calendar Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'editorialcalendar'
+			),
+        	array (
+        		'id'    => $prefix.'editorialcalendar_main',
+			    'label' => 'Editorial Calendar Main Content',
+			    'desc'  => 'Editorial Calendar Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'editorialcalendar'
+			),
+			array (
+				'id'    => $prefix.'displayrates_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Display Rates Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'displayrates'
+			),
+        	array (
+        		'id'    => $prefix.'displayrates_main',
+			    'label' => 'Display Rates Main Content',
+			    'desc'  => 'Display Rates Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'displayrates'
+			),
+			array (
+				'id'    => $prefix.'digitalrates_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Digital Rates Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'digitalrates'
+			),
+        	array (
+        		'id'    => $prefix.'digitalrates_main',
+			    'label' => 'Digital Rates Main Content',
+			    'desc'  => 'Digital Rates Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'digitalrates'
+			),
+			array (
+				'id'    => $prefix.'videointerviews_enable',
+			    'label' => 'Enabled',
+			    'desc'  => 'Enable Video Interviews Section',
+			    'type'  => 'checkbox',
+			    'metabox' => 'videointerviews'
+			),
+        	array (
+        		'id'    => $prefix.'videointerviews_main',
+			    'label' => 'Video Interviews Main Content',
+			    'desc'  => 'Video Interviews Main Content',
+			    'type'  => 'editor',
+			    'metabox' => 'videointerviews'
 			),
         );
 
@@ -343,5 +342,11 @@ class WP_Media_Kit
         foreach ($mediakit_sections as $section) {
         	$mediakit_meta->add_meta_box($section['id'],$section['desc'],$section['page']);
         }
+	}
+
+	public static function view($name,$args) {
+		$magazine_cover_options_au = $args;
+		$file = IW_WMK_ROOT_PATH . '/views/' . $name . '.php';
+		include($file);
 	}
 }
